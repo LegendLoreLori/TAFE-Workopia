@@ -14,3 +14,24 @@ foreach ($numbers as $num){
     $sum += $num;
 }
 echo "The sum of $amount numbers is $sum<br>";
+
+// Challenge 3
+$students = [
+    [
+        "name" => "Rhys",
+        "grades" => [80, 53, 83, 91]
+    ],
+    [
+        "name" => "Janice",
+        "grades" => [92, 89, 78, 94]
+    ],
+    [
+        "name" => "Hector",
+        "grades" => [60, 74, 65, 68]
+    ]
+];
+
+foreach ($students as $student) {
+    echo $student["name"] . ": ";
+    echo array_sum($student["grades"]) / count($student["grades"]) . "<br>";
+}

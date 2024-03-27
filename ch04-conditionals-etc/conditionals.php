@@ -78,11 +78,18 @@ $listings = [
                             <strong>Salary:</strong> <?php echo $job['salary']; ?>
                         </li>
                         <li class="mb-2">
-                            <strong>Location:</strong> <?php echo $job['location']; ?>
+                            <strong>Location:</strong>
+                            <?php if ($job['location'] == 'New York') : ?>
+                                <span class="text-xs text-white bg-blue-500
+                            rounded-full px-2 py-1 ml-2">Local</span>
+                            <?php endif ; ?>
+                            <?php echo $job['location']; ?>
                         </li>
-                        <li class="mb-2">
-                            <strong>Tags:</strong> <?php echo implode(', ', $job['tags']); ?>
-                        </li>
+                        <?php if($job['tags']): ?>
+                            <li class="mb-2">
+                             <strong>Tags:</strong> <?php echo implode(', ', $job['tags']); ?>
+                            </li>
+                        <?php endif ; ?>
                     </ul>
                 </div>
             </div>

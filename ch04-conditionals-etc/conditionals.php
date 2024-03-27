@@ -63,7 +63,13 @@ $listings = [
 <div class="container mx-auto p-4 mt-4">
     <?php foreach ($listings as $index => $job): ?>
         <div class="md my-4">
-            <div class="rounded-lg shadow-md">
+            <div class="
+            <?php if($index % 2 == 0) : ?>
+            bg-blue-100
+            <?php else : ?>
+            bg-white
+            <?php endif; ?>
+            rounded-lg shadow-md">
                 <div class="p-4">
                     <h2 class="text-xl font-semibold"><?php echo $job['title']; ?></h2>
                     <p class="text-gray-700 text-lg mt-2"><?php echo $job['description']; ?></p>

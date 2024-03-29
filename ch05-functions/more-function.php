@@ -1,4 +1,5 @@
 <?php
+// 1
 // Easy implementation
 $convertFahrenheit = fn ($tempF) : string =>
     $tempF . "F = " . 5/9 * ($tempF - 32) . "C";
@@ -14,3 +15,15 @@ $convertFahrenheit2 = function ($tempF) use (&$temperature) {
 
 echo "<br>";
 echo $convertFahrenheit2(54);
+echo "<br>";
+
+// 2
+$names = ["Jane", "Alice", "steven", "rick", "boWie", "hogan", "joe"];
+
+function printNamesToUpperCase($names) : void{
+    foreach ($names as $name) {
+        echo strtoupper($name) . "<br>";
+    }
+}
+
+printNamesToUpperCase($names);

@@ -30,3 +30,33 @@ $article1->publish();
 
 var_dump($article1->isPublished());
 var_dump($article2->isPublished());
+
+// Challenge 2
+class StringUtility {
+  public function __construct()
+  {
+  }
+
+  public static function shout($string) : string
+  {
+      return strtoupper($string) . "!";
+  }
+
+  public static function whisper($string) : string
+  {
+      return strtolower($string) . ".";
+  }
+
+  public static function repeat($string, $times=2) : string
+  {
+      return str_repeat($string, $times);
+  }
+}
+
+$stringUtility = new StringUtility();
+
+echo "<br>";
+
+echo $stringUtility::shout("Egg") . "<br>";
+echo $stringUtility::whisper("eGG") . "<br>";
+echo $stringUtility::repeat("Egg", 10) . "<br>";

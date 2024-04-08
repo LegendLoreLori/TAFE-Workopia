@@ -10,11 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
   if(empty($title)) {
       $messages[] = ['text' => 'Title field missing', 'colour' => 'text-red-300'];
-      $submitted = false;
   }
   if (empty($description)) {
       $messages[] = ['text' => 'Description field missing', 'colour' => 'text-red-300'];
-      $submitted = false;
   }
 
   $file = $_FILES['logo'];
@@ -30,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
     // Create file name
     $filename = uniqid() . '-' . $file['name'];
+
 
     // Check file type
     $allowedExtensions = ['jpg', 'jpeg', 'png'];
@@ -48,8 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
       $messages[] = ['text' => 'Invalid File Type', 'colour' => 'text-red-300'];
     }
   }
-
-  $submitted = true;
 }
 ?>
 
@@ -66,6 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 <body class="bg-gray-100">
   <div class="flex justify-center items-center h-screen">
     <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <?php foreach ($messages as $message): ?>
+            <p class="<?=$message['colour'] ?>">
+                <?=$message['text'] ?>
+            </p>
+        <?php endforeach; ?>
       <h1 class="text-2xl font-semibold mb-6">Create Job Listing</h1>
       <form method="post" enctype="multipart/form-data">
         <div class="mb-4">

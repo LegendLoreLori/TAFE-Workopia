@@ -2,11 +2,20 @@
 $title = '';
 $description = '';
 $submitted = false;
+$messages = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
   $title = htmlspecialchars($_POST['title'] ?? '');
   $description = htmlspecialchars($_POST['description'] ?? '');
 
+  if(empty($title)) {
+      $messages[] = ['text' => 'Title field missing', 'colour' => 'text-red-300'];
+      $submitted = false;
+  }
+  if (empty($description)) {
+      $messages[] = ['text' => 'Description field missing', 'colour' => 'text-red-300'];
+      $submitted = false;
+  }
 
   $file = $_FILES['logo'];
 
@@ -30,12 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     if (in_array($fileExtension, $allowedExtensions)) {
       // Upload file
       if (move_uploaded_file($file['tmp_name'], $uploadDir .  $filename)) {
-        echo 'File Uploaded!';
+        $messages[] = ['text' => 'File uploaded', 'colour' => 'text-green-300'];
+        $submitted = true;
       } else {
-        echo 'File Upload Error: ' . $file['error'];
+        $messages[] = ['File Upload Error: ' . $file['error'], 'colour' => 'text-red-300'];
       }
     } else {
-      echo 'Invalid File Type';
+      $messages[] = ['text' => 'Invalid File Type', 'colour' => 'text-red-300'];
     }
   }
 

@@ -44,7 +44,7 @@ class StringUtility {
 
   public static function whisper($string) : string
   {
-      return strtolower($string) . ".";
+      return strtolower($string) . "ch06-oop";
   }
 
   public static function repeat($string, $times=2) : string

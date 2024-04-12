@@ -1,5 +1,18 @@
 <?php
 require 'database.php';
+
+// Prepare a Select statement, stmt == statement
+$stmt = $pdo->prepare('SELECT * FROM posts');
+
+// Execute the statement
+$stmt->execute();
+
+// Fetch results
+// Fetching multiple records
+$results = $stmt->fetchAll();
+echo "<pre>";
+var_dump($results);
+echo "</pre>";
 ?>
 <!DOCTYPE html>
 <html lang="en">

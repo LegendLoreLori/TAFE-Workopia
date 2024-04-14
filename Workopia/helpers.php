@@ -1,5 +1,7 @@
 <?php
 
+use JetBrains\PhpStorm\NoReturn;
+
 /**
  * Get the base path
  *
@@ -38,4 +40,31 @@ function loadPartial(string $name) : void {
     } else {
         echo "Partial '$name' not found.";
     }
+}
+
+/**
+ * Inspect a value
+ *
+ * @param mixed $value
+ * @return void
+ */
+function inspect(mixed $value) : void
+{
+    echo '<pre>';
+    var_dump($value);
+    echo '<pre>';
+}
+
+/**
+ * Inspect a value and die
+ *
+ * @param mixed $value
+ * @return void
+ */
+#[NoReturn] function inspectAndDie(mixed $value) : void
+{
+    echo '<pre>';
+    var_dump($value);
+    echo '<pre>';
+    die();
 }

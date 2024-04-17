@@ -194,5 +194,9 @@ We're looking for a Data Scientist to analyze complex data and
           Show All Jobs
         </a>
       </section>
-<?php loadPartial( 'bottom-banner'); ?>
-<?php loadPartial( 'footer'); ?>
+
+<?php
+loadPartial( 'bottom-banner');
+loadPartial( 'footer');
+?>
+

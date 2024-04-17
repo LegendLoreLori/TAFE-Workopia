@@ -189,6 +189,8 @@ loadPartial('top-banner');
             </div>
         </div>
 </section>
-<?php loadPartial( 'bottom-banner'); ?>
 
-<?php loadPartial( 'footer'); ?>
+<?php
+loadPartial( 'bottom-banner');
+loadPartial( 'footer');
+?>

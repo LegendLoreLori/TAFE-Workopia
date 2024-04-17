@@ -2,11 +2,11 @@
 
 class Router
 {
-    protected array $routes = [];
+    protected $routes = [];
 
     private function registerRoute($method, $uri, $controller) : void
     {
-        $this->routes[] = [
+        $this->routes = [
             'method' => $method,
             'uri' => $uri,
             'controller' => $controller
@@ -62,19 +62,6 @@ class Router
     }
 
     /**
-     * Load error page
-     * @param int $httpCode
-     *
-     * @return void
-     */
-    public function error(int $httpCode = 404) : void
-    {
-        http_response_code(404);
-        loadView("error/$httpCode");
-        exit;
-    }
-
-    /**
      * Route the request
      *
      * @param string $uri
@@ -90,6 +77,8 @@ class Router
             }
         }
 
-        $this->error();
+        http_response_code(404);
+        loadView('error/404');
+        exit;
     }
 }

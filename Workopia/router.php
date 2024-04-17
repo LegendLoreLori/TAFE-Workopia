@@ -1,5 +1,7 @@
 <?php
 
+use JetBrains\PhpStorm\NoReturn;
+
 class Router
 {
     protected array $routes = [];
@@ -67,7 +69,7 @@ class Router
      *
      * @return void
      */
-    public function error(int $httpCode = 404) : void
+    #[NoReturn] public function error(int $httpCode = 404) : void
     {
         http_response_code(404);
         loadView("error/$httpCode");

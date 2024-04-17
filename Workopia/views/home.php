@@ -195,5 +195,4 @@ We're looking for a Data Scientist to analyze complex data and
         </a>
       </section>
 <?php loadPartial( 'bottom-banner'); ?>
-
 <?php loadPartial( 'footer'); ?>

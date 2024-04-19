@@ -1,12 +1,14 @@
 <?php
 
+use JetBrains\PhpStorm\NoReturn;
+
 class Router
 {
-    protected $routes = [];
+    protected array $routes = [];
 
     private function registerRoute($method, $uri, $controller) : void
     {
-        $this->routes = [
+        $this->routes[] = [
             'method' => $method,
             'uri' => $uri,
             'controller' => $controller
@@ -62,6 +64,19 @@ class Router
     }
 
     /**
+     * Load error page
+     * @param int $httpCode
+     *
+     * @return void
+     */
+    #[NoReturn] public function error(int $httpCode = 404) : void
+    {
+        http_response_code(404);
+        loadView("error/$httpCode");
+        exit;
+    }
+
+    /**
      * Route the request
      *
      * @param string $uri
@@ -77,8 +92,6 @@ class Router
             }
         }
 
-        http_response_code(404);
-        loadView('error/404');
-        exit;
+        $this->error();
     }
 }

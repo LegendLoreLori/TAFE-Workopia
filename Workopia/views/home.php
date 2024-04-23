@@ -32,10 +32,10 @@ loadPartial('top-banner');
                         </p>
                         <ul class="my-4 bg-gray-100 p-4 rounded">
                             <li class="mb-2">
-                                <strong>Salary:</strong> <?= $listing->salary ?>
+                                <strong>Salary:</strong> <?= formatSalary($listing->salary) ?>
                             </li>
                             <li class="mb-2">
-                                <strong>Location:</strong> <?= $listing->city ?>
+                                <strong>Location:</strong> <?= $listing->city ?>,
                                 <?= $listing->state ?>
 <!--                                <span-->
 <!--                                        class="text-xs bg-blue-500 text-white-->

@@ -70,3 +70,13 @@ function inspect(mixed $value) : void
     echo '<pre>';
     die();
 }
+
+/**
+ * Format salary
+ *
+ * @param string $salary
+ * @return string Formatted salary
+ */
+function formatSalary(string $salary) : string {
+    return '$' . number_format(floatval($salary));
+}

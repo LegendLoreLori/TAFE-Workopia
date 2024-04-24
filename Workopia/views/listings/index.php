@@ -2,7 +2,7 @@
 loadPartial('head');
 loadPartial('navbar');
 loadPartial('top-banner');
-/** @var array $listings */
+/** @var object $listings */
 ?>
 
 <!-- Job Listings -->

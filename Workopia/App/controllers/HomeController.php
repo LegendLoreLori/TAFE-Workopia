@@ -4,7 +4,8 @@ namespace App\controllers;
 
 use Framework\Database;
 
-class HomeController {
+class HomeController
+{
     protected Database $db;
 
     public function __construct()

@@ -1,5 +1,13 @@
 <?php
 
+namespace Framework;
+
+// added ext-pdo: * to composer, added these use statements to resolve namespace issue
+use Exception;
+use PDO;
+use PDOException;
+use PDOStatement;
+
 class Database
 {
     public PDO $conn;
@@ -9,7 +17,7 @@ class Database
      *
      * @param array $config
      *
-     * @throws PDOException
+     * @throws Exception
      */
     public function __construct(array $config)
     {
@@ -25,7 +33,7 @@ class Database
             $this->conn = new PDO($dsn, $config['username'],
                 $config['password'], $options);
         } catch (PDOException $e) {
-            throw new PDOException("Database connection failed:
+            throw new Exception("Database connection failed:
              {$e->getMessage()}");
         }
     }
@@ -37,9 +45,9 @@ class Database
      * @param array $params
      * @return PDOStatement
      *
-     * @throws PDOException
+     * @throws Exception
      */
-    public function query (string $query, array $params = []): PDOStatement
+    public function query(string $query, array $params = []): PDOStatement
     {
         try {
             $stmt = $this->conn->prepare($query);
@@ -52,7 +60,7 @@ class Database
             $stmt->execute();
             return $stmt;
         } catch (PDOException $e) {
-            throw new PDOException("Query failed: {$e->getMessage()}");
+            throw new Exception("Query failed: {$e->getMessage()}");
         }
     }
 }

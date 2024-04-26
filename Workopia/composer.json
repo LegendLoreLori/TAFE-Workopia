@@ -1,0 +1,19 @@
+{
+  "name": "legendlorelori/saas-lm-challenges",
+  "description": "Job listing application",
+  "authors": [
+    {
+      "name": "Lori Mandolfino",
+      "email": "20101642@tafe.wa.edu.au"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Framework\\": "Framework/",
+      "App\\": "App/"
+    }
+  },
+  "require": {
+    "ext-pdo": "*"
+  }
+}

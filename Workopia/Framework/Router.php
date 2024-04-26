@@ -105,7 +105,7 @@ class Router
                 $controller = 'App\\Controllers\\' . $route['controller'];
                 $controllerMethod = $route['controllerMethod'];
                 // instantiate controller and call method
-                $controllerInstance = new $controller(); //?
+                $controllerInstance = new $controller();
                 $controllerInstance->$controllerMethod();
                 return;
             }

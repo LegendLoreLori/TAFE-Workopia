@@ -2,6 +2,7 @@
 
 namespace Framework;
 
+use App\controllers\ErrorController;
 use JetBrains\PhpStorm\NoReturn;
 
 class Router
@@ -111,6 +112,6 @@ class Router
             }
         }
 
-        $this->error();
+        ErrorController::notFound();
     }
 }

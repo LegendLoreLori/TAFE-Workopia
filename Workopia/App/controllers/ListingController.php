@@ -71,16 +71,19 @@ class ListingController
      * Store data in database
      *
      * @return void
+     * @throws \Exception
      */
     public function store(): void
     {
         $allowedFields = ['title', 'description', 'salary', 'tags', 'company',
                           'address', 'city', 'state', 'phone', 'email',
                           'requirements', 'benefits'];
-        $requiredFields = ['title', 'description', 'email', 'city', 'state'];
+        $requiredFields = ['title', 'description', 'salary', 'email', 'city',
+                           'state'];
 
         $newListingData = array_intersect_key($_POST, array_flip($allowedFields));
         // TODO: replace hard coded userID when authentication added
+        // TODO: remember, USER_ID is required field
         $newListingData['user_id'] = 1;
         // reassigned with sanitised data with array_map
         $newListingData = array_map('sanitise', $newListingData);
@@ -100,7 +103,22 @@ class ListingController
             ]);
         } else {
             // Submit data
-            echo 'Success';
+            $fields = [];
+            $values = [];
+            foreach ($newListingData as $field => $value) {
+                $fields[] = $field;
+                if ($value === '') {
+                    $newListingData[$field] = null;
+                }
+                $values[] = ':' . $field;
+            }
+            $fields = implode(', ', $fields);
+            $values = implode(', ', $values);
+
+            $query = "INSERT INTO listings ($fields) VALUES ({$values})";
+
+            $this->db->query($query, $newListingData);
+            redirect('/listings');
         }
     }
 }

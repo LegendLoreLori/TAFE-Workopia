@@ -26,9 +26,7 @@ loadPartial('top-banner');
             <div class="p-4">
               <h2 class="text-xl font-semibold"><?= $listing->title ?></h2>
               <p class="text-gray-700 text-lg mt-2">
-                We are seeking a skilled software engineer to
-                develop
-                high-quality software solutions.
+                  <?= $listing->description ?>
               </p>
               <ul class="my-4 bg-gray-100 p-4 rounded">
                 <li class="mb-2">
@@ -38,12 +36,13 @@ loadPartial('top-banner');
                   <strong>Location:</strong> <?= $listing->city ?>,
                     <?= $listing->state ?>
                 </li>
-                <li class="mb-2">
-                  <strong>Tags:</strong> <?= $listing->tags ?>,
-                  <span>Coding</span>
-                </li>
+                  <?php if(!empty($listing->tags)) : ?>
+                    <li class="mb-2">
+                      <strong>Tags:</strong> <?= $listing->tags ?>
+                    </li>
+                  <?php endif ; ?>
               </ul>
-              <a href="/listing/<?= $listing->id ?>"
+              <a href="/listings/<?= $listing->id ?>"
                  class="block w-full text-center px-5 py-2.5 shadow-sm
                         rounded border text-base font-medium text-indigo-700
                          bg-indigo-100 hover:bg-indigo-200">

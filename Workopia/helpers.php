@@ -91,3 +91,15 @@ function sanitise(string $dirty) : string
 {
     return filter_var(trim($dirty), FILTER_SANITIZE_SPECIAL_CHARS);
 }
+
+/**
+ * Redirect to given URL
+ *
+ *@param string $url
+ *@return void
+ */
+#[NoReturn] function redirect(string $url) : void
+{
+    header("Location: $url");
+    exit;
+}

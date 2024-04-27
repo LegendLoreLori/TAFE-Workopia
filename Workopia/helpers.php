@@ -80,3 +80,14 @@ function inspect(mixed $value) : void
 function formatSalary(string $salary) : string {
     return '$' . number_format(floatval($salary));
 }
+
+/**
+ * Sanitise data
+ *
+ * @param string $dirty
+ * $return string
+ */
+function sanitise(string $dirty) : string
+{
+    return filter_var(trim($dirty), FILTER_SANITIZE_SPECIAL_CHARS);
+}

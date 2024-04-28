@@ -3,6 +3,7 @@
 namespace Framework;
 
 use App\controllers\ErrorController;
+use Framework\middleware\Authorise;
 use JetBrains\PhpStorm\NoReturn;
 
 class Router
@@ -15,9 +16,10 @@ class Router
      * @param string $method
      * @param string $uri
      * @param string $action
+     * @param array $middleware
      * @return void
      */
-    private function registerRoute(string $method, string $uri, string $action):
+    private function registerRoute(string $method, string $uri, string $action, array $middleware = []):
     void
     {
         list($controller, $controllerMethod) = explode('@', $action);
@@ -26,7 +28,8 @@ class Router
             'method' => $method,
             'uri' => $uri,
             'controller' => $controller,
-            'controllerMethod' => $controllerMethod
+            'controllerMethod' => $controllerMethod,
+            'middleware' => $middleware
         ];
     }
 
@@ -35,11 +38,13 @@ class Router
      *
      * @param string $uri
      * @param string $controller
+     * @param array $middleware
      * @return void
      */
-    public function get(string $uri, string $controller): void
+    public function get(string $uri, string $controller,
+                        array  $middleware = []): void
     {
-        $this->registerRoute('GET', $uri, $controller);
+        $this->registerRoute('GET', $uri, $controller, $middleware);
     }
 
     /**
@@ -47,11 +52,12 @@ class Router
      *
      * @param string $uri
      * @param string $controller
+     * @param array $middleware
      * @return void
      */
-    public function post(string $uri, string $controller): void
+    public function post(string $uri, string $controller, array  $middleware = []): void
     {
-        $this->registerRoute('POST', $uri, $controller);
+        $this->registerRoute('POST', $uri, $controller, $middleware);
     }
 
     /**
@@ -59,11 +65,12 @@ class Router
      *
      * @param string $uri
      * @param string $controller
+     * @param array $middleware
      * @return void
      */
-    public function put(string $uri, string $controller): void
+    public function put(string $uri, string $controller, array  $middleware = []): void
     {
-        $this->registerRoute('PUT', $uri, $controller);
+        $this->registerRoute('PUT', $uri, $controller, $middleware);
     }
 
     /**
@@ -71,11 +78,12 @@ class Router
      *
      * @param string $uri
      * @param string $controller
+     * @param array $middleware
      * @return void
      */
-    public function delete(string $uri, string $controller): void
+    public function delete(string $uri, string $controller, array  $middleware = []): void
     {
-        $this->registerRoute('DELETE', $uri, $controller);
+        $this->registerRoute('DELETE', $uri, $controller, $middleware);
     }
 
     /**
@@ -95,7 +103,6 @@ class Router
      * Route the request
      *
      * @param string $uri
-     * @param string $method
      * @return void
      */
     public function route(string $uri): void
@@ -103,7 +110,7 @@ class Router
         $requestMethod = $_SERVER['REQUEST_METHOD'];
 
         // check for _method input
-        if($requestMethod === 'POST' && isset($_POST['_method'])) {
+        if ($requestMethod === 'POST' && isset($_POST['_method'])) {
             // override request method with value of _method
             $requestMethod = strtoupper($_POST['_method']);
         }
@@ -130,6 +137,10 @@ class Router
                     }
                 }
                 if ($match) {
+                    // handle roles
+                    foreach ($route['middleware'] as $role) {
+                        (new Authorise())->handle($role);
+                    }
                     // extract controller and method
                     $controller = 'App\\Controllers\\' . $route['controller'];
                     $controllerMethod = $route['controllerMethod'];

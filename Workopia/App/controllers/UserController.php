@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Controllers;
+namespace App\controllers;
 
 use Framework\Database;
 use Framework\Validation;
 
 class UserController
 {
-    protected $db;
+    protected Database $db;
 
     /**
      * @throws \Exception

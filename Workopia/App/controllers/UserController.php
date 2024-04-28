@@ -114,6 +114,7 @@ class UserController
         // get new user ID
         $userId = $this->db->conn->lastInsertId();
 
+        // set user session
         Session::set('user', [
             'id' => $userId,
             'name' => $name,
@@ -136,6 +137,67 @@ class UserController
 
         $params = session_get_cookie_params();
         setcookie('PHPSESSID', '', time() - 86400, $params['path'], $params['domain']);
+
+        redirect('/');
+    }
+
+    /**
+     * Authenticate a user with email and password
+     *
+     * @return void
+     * @throws \Exception
+     */
+    #[NoReturn] public function authenticate(): void
+    {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        // validation
+        $errors = [];
+        if(!Validation::email($email)) {
+            $errors['email'] = 'Please enter a valid email';
+        }
+        if(!Validation::string($password, 6)) {
+            $errors['password'] = 'Password must be at least 6 characters';
+        }
+
+        if(!empty($errors)) {
+            loadView('/users/login', [
+                'errors' => $errors
+            ]);
+            exit;
+        }
+
+        // check for existing email
+        $params = [
+            'email' => $email
+        ];
+        $user = $this->db->query('SELECT * FROM users WHERE email = :email', $params)->fetch();
+        if(!$user) {
+            $errors['credentials'] = 'Username or password incorrect';
+            loadView('/users/login', [
+                'errors' => $errors
+            ]);
+            exit;
+        }
+
+        // check for password
+        if(!password_verify($password, $user->password)) {
+            $errors['credentials'] = 'Username or password incorrect';
+            loadView('/users/login', [
+                'errors' => $errors
+            ]);
+            exit;
+        }
+
+        // set user session
+        Session::set('user', [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'city' => $user->city,
+            'state' => $user->state
+        ]);
 
         redirect('/');
     }

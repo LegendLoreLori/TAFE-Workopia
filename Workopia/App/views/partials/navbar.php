@@ -10,7 +10,7 @@
             <div>
               <?= \Framework\Session::get('user')['name'] ?>
             </div>
-            <form>
+            <form method="POST" action="/auth/logout">
               <button type="submit" class="text-white inline hover:underline">
                 Logout
               </button>

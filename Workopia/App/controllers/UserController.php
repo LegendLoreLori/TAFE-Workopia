@@ -52,8 +52,8 @@ class UserController
         $password = $_POST['password'];
         $passwordConfirmation = $_POST['password_confirmation'];
 
-        $errors = [];
         // validation
+        $errors = [];
         if (!Validation::email($email)) {
             $errors['email'] = "Please enter a valid email address";
         }
@@ -78,8 +78,35 @@ class UserController
                 ]
             ]);
             exit;
-        } else {
-            inspectAndDie('store');
         }
+
+        // check if user already exists
+        $params = [
+            'email' => $email
+        ];
+        $user = $this->db->query('SELECT * FROM users WHERE email = :email', $params)->fetch();
+        if ($user) {
+            $errors['email'] = 'Email already exists';
+            loadView('users/create', [
+                'errors' => $errors,
+                'user' => [
+                    'name' => $name,
+                    'city' => $city,
+                    'state' => $state
+                ]
+            ]);
+            exit;
+        }
+
+        // create user account
+        $params = [
+            'name' => $name,
+            'email' => $email,
+            'city' => $city,
+            'state' => $state,
+            'password' => password_hash($password, PASSWORD_DEFAULT)
+        ];
+        $this->db->query('INSERT INTO users (name, email, password, city, state) VALUES (:name, :email, :password, :city, :state)', $params);
+        redirect('/');
     }
 }

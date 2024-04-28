@@ -3,6 +3,7 @@
 namespace App\controllers;
 
 use Framework\Database;
+use Framework\Session;
 use Framework\Validation;
 
 class ListingController
@@ -23,7 +24,7 @@ class ListingController
      */
     public function index(): void
     {
-        $listings = $this->db->query('SELECT * FROM listings')->fetchAll();
+        $listings = $this->db->query('SELECT * FROM listings ORDER BY created_at DESC')->fetchAll();
         /** @var array $data */
         loadView('listings/index', [
             'listings' => $listings
@@ -82,9 +83,7 @@ class ListingController
                            'state'];
 
         $newListingData = array_intersect_key($_POST, array_flip($allowedFields));
-        // TODO: replace hard coded userID when authentication added
-        // TODO: remember, USER_ID is required field
-        $newListingData['user_id'] = 1;
+        $newListingData['user_id'] = Session::get('user')['id'];
         // reassigned with sanitised data with array_map
         $newListingData = array_map('sanitise', $newListingData);
 

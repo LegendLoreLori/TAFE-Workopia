@@ -147,7 +147,7 @@ class ListingController
         }
 
         // authorisation
-        if(!Authorisation::isOwner($listing->user_id)) {
+        if (!Authorisation::isOwner($listing->user_id)) {
             Session::setFlashMessage('error_message', 'You are not authorised to delete this listing');
             redirect('/listings/' . $listing->id);
         }
@@ -184,7 +184,7 @@ class ListingController
 
         // authorisation
         // while a simpler refactor, this implementation does an unnecessary query, as the listing isn't a parameter for thi method
-        if(!Authorisation::isOwner($listing->user_id)) {
+        if (!Authorisation::isOwner($listing->user_id)) {
             Session::setFlashMessage('error_message', 'You are not authorised to update this listing');
             redirect('/listings/' . $listing->id);
         }
@@ -218,7 +218,7 @@ class ListingController
         }
 
         // authorisation
-        if(!Authorisation::isOwner($listing->user_id)) {
+        if (!Authorisation::isOwner($listing->user_id)) {
             Session::setFlashMessage('error_message', 'You are not authorised to update this listing');
             redirect('/listings/' . $listing->id);
         }
@@ -234,12 +234,12 @@ class ListingController
 
         $errors = [];
         foreach ($requiredFields as $field) {
-            if(empty($updateValues[$field]) || !Validation::string($updateValues[$field])) {
+            if (empty($updateValues[$field]) || !Validation::string($updateValues[$field])) {
                 $errors[$field] = ucfirst($field . ' is required');
             }
         }
 
-        if(!empty($errors)) {
+        if (!empty($errors)) {
             loadView('listings/edit', [
                 'listing' => $listing,
                 'errors' => $errors
@@ -260,5 +260,36 @@ class ListingController
             Session::setFlashMessage('success_message', 'Listing updated');
             redirect('/listings/' . $id);
         }
+    }
+
+    /**
+     * Search listings by keywords/location
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function search(): void
+    {
+        $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
+        $location = isset($_GET['location']) ? trim($_GET['location']) : '';
+
+        // Doesn't handle multiple keywords
+        $query = "SELECT *
+                    FROM listings
+                    WHERE (title LIKE :keywords OR description LIKE :keywords OR
+                           tags LIKE :keywords OR company LIKE :keywords)
+                      AND (city LIKE :location OR state LIKE :location)";
+
+        $params = [
+            'keywords' => "%$keywords%",
+            'location' => "%$location%"
+        ];
+
+        $listings = $this->db->query($query, $params)->fetchAll();
+        loadView('/listings/index', [
+            'listings' => $listings,
+            'keywords' => $keywords,
+            'location' => $location
+        ]);
     }
 }

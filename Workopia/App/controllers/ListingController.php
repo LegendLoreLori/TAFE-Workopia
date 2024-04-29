@@ -5,6 +5,7 @@ namespace App\controllers;
 use Framework\Database;
 use Framework\Session;
 use Framework\Validation;
+use Framework\Authorisation;
 
 class ListingController
 {
@@ -141,6 +142,13 @@ class ListingController
         if (!$listing) {
             ErrorController::notFound('Listing not found');
             return;
+        }
+
+        // authorisation
+        if(!Authorisation::isOwner($listing->user_id)) {
+            // TODO: replace hard coded implementation when traversy says so
+            $_SESSION['error_message'] = 'You are not authorised to delete this listing';
+            redirect('/listings/' . $listing->id);
         }
 
         $this->db->query('DELETE FROM listings WHERE id = :id', $params);

@@ -182,6 +182,13 @@ class ListingController
             return;
         }
 
+        // authorisation
+        // while a simpler refactor, this implementation does an unnecessary query, as the listing isn't a parameter for thi method
+        if(!Authorisation::isOwner($listing->user_id)) {
+            Session::setFlashMessage('error_message', 'You are not authorised to update this listing');
+            redirect('/listings/' . $listing->id);
+        }
+
         loadView('/listings/edit', [
             'listing' => $listing
         ]);
@@ -208,6 +215,12 @@ class ListingController
         if (!$listing) {
             ErrorController::notFound('Listing not found');
             return;
+        }
+
+        // authorisation
+        if(!Authorisation::isOwner($listing->user_id)) {
+            Session::setFlashMessage('error_message', 'You are not authorised to update this listing');
+            redirect('/listings/' . $listing->id);
         }
 
         $allowedFields = ['title', 'description', 'salary', 'tags', 'company',

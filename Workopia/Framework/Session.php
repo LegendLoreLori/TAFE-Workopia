@@ -34,7 +34,7 @@ class Session {
      * @param mixed $default
      * @return mixed
      */
-    public static function get(string $key, mixed $default = null)
+    public static function get(string $key, mixed $default = null): mixed
     {
 //        what traversy did:
 //        return isset($_SESSION[$key]) ? $_SESSION[$key] : $default;
@@ -61,7 +61,7 @@ class Session {
      */
     public static function clear(string $key): void
     {
-        if (Session::has($key)) {
+        if (self::has($key)) {
             unset($_SESSION[$key]);
         }
     }
@@ -75,5 +75,32 @@ class Session {
     {
         session_unset();
         session_destroy();
+    }
+
+    /**
+     * Set a flash message
+     *
+     * @param string $key
+     * @param string $message
+     * @return void
+     */
+    public static function setFlashMessage(string $key, string $message): void
+    {
+        self::set('flash_' . $key, $message);
+    }
+
+    /**
+     * Get a flash message and unset
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    public static function getFlashMessage(string $key, mixed $default = null):
+    mixed
+    {
+        $message = self::get('flash_' . $key, $default);
+        self::clear('flash_' . $key);
+        return $message;
     }
 }

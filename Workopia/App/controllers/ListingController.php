@@ -118,6 +118,8 @@ class ListingController
             $query = "INSERT INTO listings ($fields) VALUES ({$values})";
 
             $this->db->query($query, $newListingData);
+            Session::setFlashMessage('success_message', 'Listing created successfully');
+
             redirect('/listings');
         }
     }
@@ -146,15 +148,14 @@ class ListingController
 
         // authorisation
         if(!Authorisation::isOwner($listing->user_id)) {
-            // TODO: replace hard coded implementation when traversy says so
-            $_SESSION['error_message'] = 'You are not authorised to delete this listing';
+            Session::setFlashMessage('error_message', 'You are not authorised to delete this listing');
             redirect('/listings/' . $listing->id);
         }
 
         $this->db->query('DELETE FROM listings WHERE id = :id', $params);
 
         // set flash message
-        $_SESSION['success_message'] = 'Listing deleted successfully';
+        Session::setFlashMessage('success_message', 'Listing deleted successfully');
         redirect('/listings');
     }
 
@@ -242,7 +243,8 @@ class ListingController
 
             $this->db->query($updateQuery, $updateValues);
 
-            $_SESSION['success_message'] = 'Listing updated.';
+            // set flash message
+            Session::setFlashMessage('success_message', 'Listing updated');
             redirect('/listings/' . $id);
         }
     }
